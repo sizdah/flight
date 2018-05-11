@@ -34,63 +34,6 @@ def start(bot, update):
     bot.send_message(chat_id=id, text="انتخاب کنید", reply_markup=reply_markup)
 
 
-
-def engine(bot, update):
-    global LINK
-    global VALUE
-    global SITUATION
-
-    ###########
-
-
-
-    while SITUATION:
-
-        try:
-            r = requests.get(LINK)
-            c = r.content
-
-            soup = BeautifulSoup(c, "html.parser")
-
-            usd = soup.find_all("span", {"class": "price"})
-
-            list = []
-
-            for item in usd:
-                mat = re.search(r'\d{3},\d{3}', str(item))
-                mat = mat.group(0)
-                mat = mat.replace(",", "")
-                list.append(mat)
-
-            list.sort()
-            print(list[0])
-            if int(list[0]) <= VALUE:
-                price_found = str (list[0])
-                goodnews = " یافت شد "+price_found
-                update.message.reply_text(goodnews)
-                update.message.reply_text(LINK)
-                stop(bot,update)
-                break
-
-            bot = Bot(TOKEN)
-
-
-            if "stop" in str(bot.get_updates()[0].message.text):
-                stop(bot,update)
-         #   updater1 = Updater(TOKEN)
-         #  bot1 = updater1.bot
-         #   dp1 = updater1.dispatcher
-         #   dp1.add_handler(CommandHandler("stop", stop))
-         #   updater1.start_polling()
-          #  setup()
-
-
-        except:
-            stop(bot,update)
-
-        sleep(60)
-
-
 def scan(bot, update):
  global GETSCAN
  GETSCAN=True
@@ -126,7 +69,6 @@ def echo(bot, update):
             SITUATION = True
             VALUE = int(update.message.text)
             update.message.reply_text("ناظر اجرا شد")
-            engine(bot,update)
         else:
             update.message.reply_text("از راهنما کمک بگیرید")
             update.message.reply_text("/start")
@@ -159,7 +101,43 @@ def setup(webhook_url=None):
 
         # log all errors
         dp.add_error_handler(error)
-    # Add your handlers here
+        # Add your handlers here
+
+
+
+
+
+
+        while SITUATION:
+
+            try:
+                r = requests.get(LINK)
+                c = r.content
+
+                soup = BeautifulSoup(c, "html.parser")
+
+                usd = soup.find_all("span", {"class": "price"})
+
+                list = []
+
+                for item in usd:
+                    mat = re.search(r'\d{3},\d{3}', str(item))
+                    mat = mat.group(0)
+                    mat = mat.replace(",", "")
+                    list.append(mat)
+
+                list.sort()
+                print(list[0])
+                if int(list[0]) <= VALUE:
+                    price_found = str(list[0])
+                    goodnews = " یافت شد " + price_found
+                    update.message.reply_text(goodnews)
+                    update.message.reply_text(LINK)
+                    stop(bot, update)
+            except:
+                stop(bot,update)
+
+
     if webhook_url:
         bot.set_webhook(webhook_url=webhook_url)
         thread = Thread(target=dp.start, name='dispatcher')
