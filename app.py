@@ -47,10 +47,9 @@ def engine(bot, update):
     user = str(user)
     ###########
 
-    update.message.reply_text('انحین')
+
 
     while SITUATION:
-        update.message.reply_text('حلقه')
 
         try:
             r = requests.get(LINK)
@@ -71,7 +70,11 @@ def engine(bot, update):
             list.sort()
             print(list[0])
             if int(list[0]) <= VALUE:
+                price_found = str (list[0])
+                goodnews = " یافت شد "+price_found
+                bot.send_message(chat_id=id, text=goodnews)
                 bot.send_message(chat_id=id, text=LINK)
+                stop(bot,update)
         except:
             pass
 
@@ -81,7 +84,8 @@ def engine(bot, update):
 def scan(bot, update):
  global GETSCAN
  GETSCAN=True
- update.message.reply_text('اکنون لینک را وارد کنید', reply_markup=ReplyKeyboardRemove())
+ update.message.reply_text('پرواز مورد نظر خود را ابتدار در سایت ghasedak24.com جستجو کنید و پس از جستجو لینک بالای مرورگر خود را بفرستید')
+ update.message.reply_text('منتظر لینک....', reply_markup=ReplyKeyboardRemove())
 
 def stop(bot, update):
  global SITUATION
