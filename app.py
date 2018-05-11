@@ -65,13 +65,10 @@ def engine(bot, update):
             list.sort()
             print(list[0])
             if int(list[0]) <= VALUE:
-                bot = Bot(TOKEN)
-                id = update.message.from_user.id
-                id = int(id)
                 price_found = str (list[0])
                 goodnews = " یافت شد "+price_found
-                bot.send_message(chat_id=id, text=goodnews)
-                bot.send_message(chat_id=id, text=LINK)
+                update.message.reply_text(goodnews)
+                update.message.reply_text(LINK)
                 stop(bot,update)
                 break
 
