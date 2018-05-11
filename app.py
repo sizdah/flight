@@ -39,12 +39,7 @@ def engine(bot, update):
     global LINK
     global VALUE
     global SITUATION
-    bot = Bot(TOKEN)
-    id = update.message.from_user.id
-    id = int(id)
-    #########
-    user = update.message.from_user
-    user = str(user)
+
     ###########
 
 
@@ -70,13 +65,25 @@ def engine(bot, update):
             list.sort()
             print(list[0])
             if int(list[0]) <= VALUE:
+                bot = Bot(TOKEN)
+                id = update.message.from_user.id
+                id = int(id)
                 price_found = str (list[0])
                 goodnews = " یافت شد "+price_found
                 bot.send_message(chat_id=id, text=goodnews)
                 bot.send_message(chat_id=id, text=LINK)
                 stop(bot,update)
+
+            updater = Updater(TOKEN)
+            bot = updater.bot
+            dp = updater.dispatcher
+            dp.add_handler(CommandHandler("stop", stop))
+
+
+
+
         except:
-            pass
+            stop(bot,update)
 
         sleep(60)
 
