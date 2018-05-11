@@ -74,11 +74,11 @@ def engine(bot, update):
                 bot.send_message(chat_id=id, text=LINK)
                 stop(bot,update)
 
-            updater = Updater(TOKEN)
-            bot = updater.bot
-            dp = updater.dispatcher
-            dp.add_handler(CommandHandler("stop", stop))
-            updater.start_polling()
+            updater1 = Updater(TOKEN)
+            bot1 = updater1.bot
+            dp1 = updater1.dispatcher
+            dp1.add_handler(CommandHandler("stop", stop))
+            updater1.start_polling()
 
 
 
