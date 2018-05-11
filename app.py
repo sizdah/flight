@@ -1,0 +1,150 @@
+import logging
+import requests ,re
+from bs4 import BeautifulSoup
+from queue import Queue
+from threading import Thread
+from telegram import Bot,ReplyKeyboardMarkup,ReplyKeyboardRemove
+from telegram.ext import Dispatcher, CommandHandler, MessageHandler, Updater, Filters
+from time import sleep
+
+
+
+logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+                    level=logging.INFO)
+logger = logging.getLogger(__name__)
+TOKEN = '590253293:AAHxmKhXGS-o-MFjELhcU_bQ3rbhVc4Hqy8'
+SITUATION= False
+VALUE = 0
+LINK = ""
+GETSCAN = False
+GETVALUE = False
+def start(bot, update):
+    update.message.reply_text('با زدن عبارت scan/ میتونید ناظر پرواز را ثبت کنید')
+    update.message.reply_text('با زدن عبارت stop/ میتونید همیشه ناظر را غیرفعال کنید')
+
+    bot = Bot(TOKEN)
+    id = update.message.from_user.id
+    id = int(id)
+
+    custom_keyboard = [
+        ['/scan'],
+        ['/stop']
+    ]
+    reply_markup = ReplyKeyboardMarkup(custom_keyboard)
+    bot.send_message(chat_id=id, text="انتخاب کنید", reply_markup=reply_markup)
+
+
+
+def engine(bot, update):
+    global LINK
+    global VALUE
+    global SITUATION
+    bot = Bot(TOKEN)
+    id = update.message.from_user.id
+    id = int(id)
+    #########
+    user = update.message.from_user
+    user = str(user)
+    ###########
+
+
+    while SITUATION:
+        try:
+            r = requests.get(LINK)
+            c = r.content
+
+            soup = BeautifulSoup(c, "html.parser")
+
+            usd = soup.find_all("span", {"class": "price"})
+
+            list = []
+
+            for item in usd:
+                mat = re.search(r'\d{3},\d{3}', str(item))
+                mat = mat.group(0)
+                mat = mat.replace(",", "")
+                list.append(mat)
+
+            list.sort()
+            print(list[0])
+            if int(list[0]) <= VALUE:
+                bot.send_message(chat_id=id, text=LINK)
+        except:
+            pass
+
+        sleep(60)
+
+
+def scan(bot, update):
+ global GETSCAN
+ GETSCAN=True
+ update.message.reply_text('اکنون لینک را وارد کنید', reply_markup=ReplyKeyboardRemove())
+
+def stop(bot, update):
+ global SITUATION
+ SITUATION=False
+ update.message.reply_text('ناظر غیر فعال', reply_markup=ReplyKeyboardRemove())
+
+
+
+def echo(bot, update):
+    global GETSCAN
+    global LINK
+    global GETVALUE
+    global VALUE
+    if GETSCAN:
+        LINK = str(update.message.text)
+        update.message.reply_text("حداقل مبلغ را وارد کنید")
+        GETSCAN = False
+        GETVALUE = True
+    else:
+        if GETVALUE:
+            GETVALUE = False
+            VALUE = int(update.message.text)
+            engine(bot,update)
+        else:
+            update.message.reply_text("از راهنما کمک بگیرید")
+            update.message.reply_text("/start")
+
+
+def error(bot, update, error):
+    logger.warning('Update "%s" caused error "%s"' % (update, error))
+
+# Write your handlers here
+
+
+def setup(webhook_url=None):
+    """If webhook_url is not passed, run with long-polling."""
+    logging.basicConfig(level=logging.WARNING)
+    if webhook_url:
+        bot = Bot(TOKEN)
+        update_queue = Queue()
+        dp = Dispatcher(bot, update_queue)
+    else:
+        updater = Updater(TOKEN)
+        bot = updater.bot
+        dp = updater.dispatcher
+        dp.add_handler(CommandHandler("start", start))
+        dp.add_handler(CommandHandler("scan", scan))
+        dp.add_handler(CommandHandler("stop", stop))
+        dp.add_handler(CommandHandler("help", start))
+
+        # on noncommand i.e message - echo the message on Telegram
+        dp.add_handler(MessageHandler(Filters.text, echo))
+
+        # log all errors
+        dp.add_error_handler(error)
+    # Add your handlers here
+    if webhook_url:
+        bot.set_webhook(webhook_url=webhook_url)
+        thread = Thread(target=dp.start, name='dispatcher')
+        thread.start()
+        return update_queue, bot
+    else:
+        bot.set_webhook()  # Delete webhook
+        updater.start_polling()
+        updater.idle()
+
+
+if __name__ == '__main__':
+    setup()
