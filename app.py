@@ -78,7 +78,8 @@ def engine(bot, update):
             bot = updater.bot
             dp = updater.dispatcher
             dp.add_handler(CommandHandler("stop", stop))
-
+            updater.start_polling()
+            updater.idle()
 
 
 
