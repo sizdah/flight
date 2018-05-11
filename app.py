@@ -98,6 +98,7 @@ def stop(bot, update):
  global SITUATION
  SITUATION=False
  update.message.reply_text('ناظر غیر فعال', reply_markup=ReplyKeyboardRemove())
+ setup()
 
 
 
