@@ -81,7 +81,7 @@ def engine(bot, update):
          #   dp1 = updater1.dispatcher
          #   dp1.add_handler(CommandHandler("stop", stop))
          #   updater1.start_polling()
-          #  setup()
+            setup()
 
 
         except:
@@ -135,9 +135,14 @@ def error(bot, update, error):
     logger.warning('Update "%s" caused error "%s"' % (update, error))
 
 # Write your handlers here
-
+updater = Updater(TOKEN)
+bot = updater.bot
+dp = updater.dispatcher
 
 def setup(webhook_url=None):
+    global dp
+    global updater
+    global bot
     """If webhook_url is not passed, run with long-polling."""
     logging.basicConfig(level=logging.WARNING)
     if webhook_url:
@@ -145,9 +150,6 @@ def setup(webhook_url=None):
         update_queue = Queue()
         dp = Dispatcher(bot, update_queue)
     else:
-        updater = Updater(TOKEN)
-        bot = updater.bot
-        dp = updater.dispatcher
         dp.add_handler(CommandHandler("start", start))
         dp.add_handler(CommandHandler("scan", scan))
         dp.add_handler(CommandHandler("stop", stop))
