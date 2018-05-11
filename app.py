@@ -73,6 +73,7 @@ def engine(bot, update):
                 bot.send_message(chat_id=id, text=goodnews)
                 bot.send_message(chat_id=id, text=LINK)
                 stop(bot,update)
+                break
 
             updater1 = Updater(TOKEN)
             bot1 = updater1.bot
