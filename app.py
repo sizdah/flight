@@ -76,11 +76,11 @@ def engine(bot, update):
 
           #  if "stop" in str(bot.get_updates()[0].message.text):
           #      stop(bot,update)
-            updater1 = Updater(TOKEN)
-            bot1 = updater1.bot
-            dp1 = updater1.dispatcher
-            dp1.add_handler(CommandHandler("stop", stop))
-            updater1.start_polling()
+          #  updater1 = Updater(TOKEN)
+         #   bot1 = updater1.bot
+         #   dp1 = updater1.dispatcher
+         #   dp1.add_handler(CommandHandler("stop", stop))
+        #    updater1.start_polling()
          #   setup()
 
 
