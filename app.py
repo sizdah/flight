@@ -95,6 +95,7 @@ def echo(bot, update):
     global LINK
     global GETVALUE
     global VALUE
+    global SITUATION
     if GETSCAN:
         LINK = str(update.message.text)
         update.message.reply_text("حداقل مبلغ را به ریال وارد کنید")
@@ -103,6 +104,7 @@ def echo(bot, update):
     else:
         if GETVALUE:
             GETVALUE = False
+            SITUATION = True
             VALUE = int(update.message.text)
             update.message.reply_text("ناظر اجرا شد")
             engine(bot,update)
