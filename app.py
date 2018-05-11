@@ -47,8 +47,11 @@ def engine(bot, update):
     user = str(user)
     ###########
 
+    update.message.reply_text('انحین')
 
     while SITUATION:
+        update.message.reply_text('حلقه')
+
         try:
             r = requests.get(LINK)
             c = r.content
@@ -94,13 +97,14 @@ def echo(bot, update):
     global VALUE
     if GETSCAN:
         LINK = str(update.message.text)
-        update.message.reply_text("حداقل مبلغ را وارد کنید")
+        update.message.reply_text("حداقل مبلغ را به ریال وارد کنید")
         GETSCAN = False
         GETVALUE = True
     else:
         if GETVALUE:
             GETVALUE = False
             VALUE = int(update.message.text)
+            update.message.reply_text("ناظر اجرا شد")
             engine(bot,update)
         else:
             update.message.reply_text("از راهنما کمک بگیرید")
