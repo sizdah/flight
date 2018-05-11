@@ -69,19 +69,19 @@ def engine(bot, update):
                 goodnews = " یافت شد "+price_found
                 update.message.reply_text(goodnews)
                 update.message.reply_text(LINK)
-                stop(bot,update)
+          #     stop(bot,update)
                 break
 
-            updater1 = Updater(TOKEN)
-            bot1 = updater1.bot
-            dp1 = updater1.dispatcher
-            dp1.add_handler(CommandHandler("stop", stop))
-            updater1.start_polling()
-
+         #   updater1 = Updater(TOKEN)
+         #  bot1 = updater1.bot
+         #   dp1 = updater1.dispatcher
+         #   dp1.add_handler(CommandHandler("stop", stop))
+         #   updater1.start_polling()
+            setup()
 
 
         except:
-            stop(bot,update)
+            setup()
 
         sleep(60)
 
