@@ -97,6 +97,10 @@ def scan(bot, update):
 def stop(bot, update):
  global SITUATION
  SITUATION=False
+ global GETVALUE
+ GETVALUE = False
+ global GETSCAN
+ GETSCAN = False
  update.message.reply_text('ناظر غیر فعال', reply_markup=ReplyKeyboardRemove())
  setup()
 
