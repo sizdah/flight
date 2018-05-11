@@ -69,13 +69,13 @@ def engine(bot, update):
                 goodnews = " یافت شد "+price_found
                 update.message.reply_text(goodnews)
                 update.message.reply_text(LINK)
-          #     stop(bot,update)
+                stop(bot,update)
                 break
 
             bot = Bot(TOKEN)
 
 
-            if "stop" in str(bot.get_updates()[0].message):
+            if "stop" in str(bot.get_updates()[0].message.text):
                 stop(bot,update)
          #   updater1 = Updater(TOKEN)
          #  bot1 = updater1.bot
@@ -88,7 +88,7 @@ def engine(bot, update):
         except:
             stop(bot,update)
 
-       #sleep(60)
+        sleep(60)
 
 
 def scan(bot, update):
