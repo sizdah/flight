@@ -72,18 +72,23 @@ def engine(bot, update):
           #     stop(bot,update)
                 break
 
+            bot = Bot(TOKEN)
+
+
+            if "stop" in str(bot.get_updates()[0].message):
+                stop(bot,update)
          #   updater1 = Updater(TOKEN)
          #  bot1 = updater1.bot
          #   dp1 = updater1.dispatcher
          #   dp1.add_handler(CommandHandler("stop", stop))
          #   updater1.start_polling()
-            setup()
+          #  setup()
 
 
         except:
-            setup()
+            stop(bot,update)
 
-        sleep(60)
+       #sleep(60)
 
 
 def scan(bot, update):
