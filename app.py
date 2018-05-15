@@ -87,7 +87,7 @@ def engine(bot, update):
         except:
           stop(bot,update)
 
-        sleep(60)
+        sleep(600)
 
 
 def scan(bot, update):
